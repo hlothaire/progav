@@ -11,17 +11,18 @@
 
 #define SPRITE_SIZE 32
 #define SPRITE_HEIGHT 32
-#define PACMAN_HEIGHT 30
+#define PACMAN_HEIGHT 31
 #define XdepartJ 160
 #define YdepartJ 160
 #define XdepartF1 32
 #define YdepartF1 32
 #define XdepartF2 32
-#define YdepartF2 448
-#define XdepartF3 448
-#define YdepartF3 448
-#define XdepartF4 448
+#define YdepartF2 576
+#define XdepartF3 576
+#define YdepartF3 576
+#define XdepartF4 576
 #define YdepartF4 32
+#define Speed 32
 
 
 void init_pacman(pacman_t* pacman,int PosX, int PosY)
@@ -136,8 +137,8 @@ void handle_events(SDL_Event *event,world_t *world)
         case SDLK_z:
             move_fantomes(world);
             if(collision_fantomes(world) == 0){
-                if(collision_wall(world->joueur->PosX, (world->joueur->PosY - SPRITE_SIZE),world) == 0){
-                    world->joueur->PosY -= SPRITE_SIZE;
+                if(collision_wall(world->joueur->PosX, (world->joueur->PosY - Speed),world) == 0){
+                    world->joueur->PosY -= Speed;
                     world->joueur->ori = 1;
                     collision_fantomes(world);
                     break;
@@ -148,8 +149,8 @@ void handle_events(SDL_Event *event,world_t *world)
         case SDLK_s:
             move_fantomes(world);
             if(collision_fantomes(world) == 0){
-                if(collision_wall(world->joueur->PosX, (world->joueur->PosY + SPRITE_SIZE),world) == 0){
-                    world->joueur->PosY += SPRITE_SIZE;
+                if(collision_wall(world->joueur->PosX, (world->joueur->PosY + Speed),world) == 0){
+                    world->joueur->PosY += Speed;
                     world->joueur->ori = 2;
                     collision_fantomes(world);
                     break;
@@ -160,8 +161,8 @@ void handle_events(SDL_Event *event,world_t *world)
         case SDLK_q:
             move_fantomes(world);
             if(collision_fantomes(world) == 0){
-                if(collision_wall(world->joueur->PosX - SPRITE_SIZE,world->joueur->PosY,world) == 0){
-                    world->joueur->PosX -= SPRITE_SIZE;
+                if(collision_wall(world->joueur->PosX - Speed,world->joueur->PosY,world) == 0){
+                    world->joueur->PosX -= Speed;
                     world->joueur->ori = 3;
                     collision_fantomes(world);
                     break;
@@ -173,8 +174,8 @@ void handle_events(SDL_Event *event,world_t *world)
         case SDLK_d:
             move_fantomes(world);
             if(collision_fantomes(world) == 0){
-                if(collision_wall(world->joueur->PosX + SPRITE_SIZE,world->joueur->PosY,world) == 0){
-                    world->joueur->PosX += SPRITE_SIZE;
+                if(collision_wall(world->joueur->PosX + Speed,world->joueur->PosY,world) == 0){
+                    world->joueur->PosX += Speed;
                     world->joueur->ori = 4;
                     collision_fantomes(world);
                     break;
@@ -294,13 +295,13 @@ void update_data(world_t *world)
 
 void move_fantomes(world_t *world)
 {
-    move_fantome(world, world->fantome1);
-    move_fantome(world, world->fantome2);
-    move_fantome(world, world->fantome3);
-    move_fantome(world, world->fantome4);
+    move_fantome1(world, world->fantome1);
+    move_fantome2(world, world->fantome2);
+    move_fantome1(world, world->fantome3);
+    move_fantome3(world, world->fantome4);
 }
 
-void move_fantome(world_t *world, fantome_t *fantome)
+void move_fantome1(world_t *world, fantome_t *fantome)
 {
     int PosXJ = world->joueur->PosX;
     int PosYJ = world->joueur->PosY;
@@ -309,144 +310,181 @@ void move_fantome(world_t *world, fantome_t *fantome)
     //difference de position
     int DX = abs(PosXF - PosXJ);
     int DY = abs(PosYF - PosYJ);
-
-    int direction;
-    switch(fantome->Difficulte)
-    {
-        case 1:
-            //Si la distance en X est plus grande qu'en Y, alors on bouge sur X
+           //Si la distance en X est plus grande qu'en Y, alors on bouge sur X
             if(DX > DY){
                 //Si F est plus a droite
                 if(PosXF > PosXJ){
                     //detection collision gauche
-                    if(collision_wall((PosXF - SPRITE_SIZE), PosYF,world) == 0)
+                    if(collision_wall((PosXF - Speed), PosYF,world) == 0)
                     {
-                        fantome->PosX -= SPRITE_SIZE;
+                        fantome->PosX -= Speed;
                     }else{
-                        if(collision_wall(PosXF, (PosYF - SPRITE_SIZE),world) == 0){
-                            fantome->PosY -= SPRITE_SIZE;
+                        if(collision_wall(PosXF, (PosYF - Speed),world) == 0){
+                            fantome->PosY -= Speed;
                         }else{
-                            fantome->PosY += SPRITE_SIZE;
+                            fantome->PosY += Speed;
                         }
                     }
                 }else{
                     //dectection collision droite
-                    if(collision_wall((PosXF + SPRITE_SIZE), PosYF,world) == 0){
-                        fantome->PosX += SPRITE_SIZE;
+                    if(collision_wall((PosXF + Speed), PosYF,world) == 0){
+                        fantome->PosX += Speed;
                     }else{
-                        if(collision_wall(PosXF, (PosYF - SPRITE_SIZE),world) == 0){
-                            fantome->PosY -= SPRITE_SIZE;
+                        if(collision_wall(PosXF, (PosYF - Speed),world) == 0){
+                            fantome->PosY -= Speed;
                         }else{
-                            fantome->PosY += SPRITE_SIZE;
+                            fantome->PosY += Speed;
                         }
                     }
                 }
             }else{
                 if(PosYF >= PosYJ){
                     //dectection collision haut
-                    if(collision_wall(PosXF, (PosYF - SPRITE_SIZE),world) == 0){
-                        fantome->PosY -= SPRITE_SIZE;
+                    if(collision_wall(PosXF, (PosYF - Speed),world) == 0){
+                        fantome->PosY -= Speed;
                     }else{
-                        if(collision_wall((PosXF + SPRITE_SIZE), PosYF,world) == 0){
-                            fantome->PosX += SPRITE_SIZE;
+                        if(collision_wall((PosXF + Speed), PosYF,world) == 0){
+                            fantome->PosX += Speed;
                         }else{
-                            fantome->PosX -=SPRITE_SIZE;
+                            fantome->PosX -= Speed;
                         }
                     }
                 }else{
                     //Detection collision bas
-                    if(collision_wall(PosXF, (PosYF + SPRITE_SIZE),world) == 0){
-                        fantome->PosY += SPRITE_SIZE;
+                    if(collision_wall(PosXF, (PosYF + Speed),world) == 0){
+                        fantome->PosY += Speed;
                     }else{
-                        if(collision_wall((PosXF - SPRITE_SIZE), PosYF,world) == 0){
-                            fantome->PosX -= SPRITE_SIZE;
+                        if(collision_wall((PosXF - Speed), PosYF,world) == 0){
+                            fantome->PosX -= Speed;
                         }else{
-                            fantome->PosX +=SPRITE_SIZE;
+                            fantome->PosX += Speed;
                         }
                     }
                 }
             }
-            break;
-        //case 2: a definir
-        case 3:
-            direction = rand() % 10 + 1;
-            if(direction > 5){
-                if(collision_wall((PosXF + SPRITE_SIZE), PosYF,world) == 0){
-                        fantome->PosX += SPRITE_SIZE;
-                    }else{
-                        if(collision_wall(PosXF, (PosYF - SPRITE_SIZE),world) == 0){
-                            fantome->PosY -= SPRITE_SIZE;
-                        }else{
-                            fantome->PosY += SPRITE_SIZE;
-                        }
-                    }
+   
+}
 
-            }else{
-                if(collision_wall((PosXF - SPRITE_SIZE), PosYF,world) == 0){
-                        fantome->PosX -= SPRITE_SIZE;
-                    }else{
-                        if(collision_wall(PosXF, (PosYF + SPRITE_SIZE),world) == 0){
-                            fantome->PosY += SPRITE_SIZE;
-                        }else{
-                            fantome->PosY -= SPRITE_SIZE;
-                        }
-                    }
-            }
-            break;
+void move_fantome2(world_t *world, fantome_t *fantome)
+{
+    int PosXF = fantome->PosX;
+    int PosYF = fantome->PosY;
 
-        default:
-            direction = rand() % 4 + 1;
+    int direction = rand() % 4 + 1;
             switch(direction){
                 //haut
                 case 1:
-                    if(collision_wall(PosXF, (PosYF - SPRITE_SIZE),world) == 0){
-                        fantome->PosY -= SPRITE_SIZE;
+                    if(collision_wall(PosXF, (PosYF - Speed),world) == 0){
+                        fantome->PosY -= Speed;
                     }else{
-                        if(collision_wall((PosXF + SPRITE_SIZE), PosYF,world) == 0){
-                            fantome->PosX += SPRITE_SIZE;
+                        if(collision_wall((PosXF + Speed), PosYF,world) == 0){
+                            fantome->PosY += Speed;
                         }else{
-                            fantome->PosX -=SPRITE_SIZE;
+                            fantome->PosX -=Speed;
                         }
                     }
                     break;
                 //bas
                 case 2:
-                    if(collision_wall(PosXF, (PosYF + SPRITE_SIZE),world) == 0){
-                        fantome->PosY += SPRITE_SIZE;
+                    if(collision_wall(PosXF, (PosYF + Speed),world) == 0){
+                        fantome->PosY += Speed;
                     }else{
-                        if(collision_wall((PosXF - SPRITE_SIZE), PosYF,world) == 0){
-                            fantome->PosX -= SPRITE_SIZE;
+                        if(collision_wall((PosXF -Speed), PosYF,world) == 0){
+                            fantome->PosX -= Speed;
                         }else{
-                            fantome->PosX +=SPRITE_SIZE;
+                            fantome->PosX +=Speed;
                         }
                     }
                     break;
                 //droite
                 case 3:
-                    if(collision_wall((PosXF + SPRITE_SIZE), PosYF,world) == 0){
-                        fantome->PosX += SPRITE_SIZE;
+                    if(collision_wall((PosXF + Speed), PosYF,world) == 0){
+                        fantome->PosX += Speed;
                     }else{
-                        if(collision_wall(PosXF, (PosYF - SPRITE_SIZE),world) == 0){
-                            fantome->PosY -= SPRITE_SIZE;
+                        if(collision_wall(PosXF, (PosYF - Speed),world) == 0){
+                            fantome->PosY -= Speed;
                         }else{
-                            fantome->PosY += SPRITE_SIZE;
+                            fantome->PosY += Speed;
                         }
                     }
                     break;
                 //gauche
                 case 4:
-                    if(collision_wall((PosXF - SPRITE_SIZE), PosYF,world) == 0)
+                    if(collision_wall((PosXF - Speed), PosYF,world) == 0)
                     {
-                        fantome->PosX -= SPRITE_SIZE;
+                        fantome->PosX -= Speed;
                     }else{
-                        if(collision_wall(PosXF, (PosYF + SPRITE_SIZE),world) == 0){
-                            fantome->PosY += SPRITE_SIZE;
+                        if(collision_wall(PosXF, (PosYF + Speed),world) == 0){
+                            fantome->PosY += Speed;
                         }else{
-                            fantome->PosY -= SPRITE_SIZE;
+                            fantome->PosY -= Speed;
                         }
                     }
                     break;
             }
+    
+}
 
-    }
+void move_fantome3(world_t *world, fantome_t *fantome)
+{
+    int PosXJ = world->joueur->PosX;
+    int PosYJ = world->joueur->PosY;
+    int PosXF = fantome->PosX;
+    int PosYF = fantome->PosY;
+    //difference de position
+    int DX = abs(PosXF - PosXJ);
+    int DY = abs(PosYF - PosYJ);
+           //Si la distance en X est plus grande qu'en Y, alors on bouge sur X
+            if(DX < DY){
+                //Si F est plus a droite
+                if(PosXF > PosXJ){
+                    //detection collision gauche
+                    if(collision_wall((PosXF - Speed), PosYF,world) == 0)
+                    {
+                        fantome->PosX -= Speed;
+                    }else{
+                        if(collision_wall(PosXF, (PosYF - Speed),world) == 0){
+                            fantome->PosY -= Speed;
+                        }else{
+                            fantome->PosY += Speed;
+                        }
+                    }
+                }else{
+                    //dectection collision droite
+                    if(collision_wall((PosXF + Speed), PosYF,world) == 0){
+                        fantome->PosX += Speed;
+                    }else{
+                        if(collision_wall(PosXF, (PosYF - Speed),world) == 0){
+                            fantome->PosY -= Speed;
+                        }else{
+                            fantome->PosY += Speed;
+                        }
+                    }
+                }
+            }else{
+                if(PosYF >= PosYJ){
+                    //dectection collision haut
+                    if(collision_wall(PosXF, (PosYF - Speed),world) == 0){
+                        fantome->PosY -= Speed;
+                    }else{
+                        if(collision_wall((PosXF + Speed), PosYF,world) == 0){
+                            fantome->PosX += Speed;
+                        }else{
+                            fantome->PosX -= Speed;
+                        }
+                    }
+                }else{
+                    //Detection collision bas
+                    if(collision_wall(PosXF, (PosYF + Speed),world) == 0){
+                        fantome->PosY += Speed;
+                    }else{
+                        if(collision_wall((PosXF - Speed), PosYF,world) == 0){
+                            fantome->PosX -= Speed;
+                        }else{
+                            fantome->PosX += Speed;
+                        }
+                    }
+                }
+            }
+   
 }

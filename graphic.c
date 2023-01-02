@@ -208,7 +208,7 @@ void refresh_graphics(SDL_Renderer *renderer, world_t *world,textures_t *texture
       apply_fantome(renderer,textures->fantome4,world->fantome4);
   }
   if(world->gameover == 0){
-    apply_text(renderer,10,520,80,30,conv,textures->font);
+    apply_text(renderer,10,655,80,30,conv,textures->font);
   }
   if(world->gameover == 1){
     apply_text(renderer,100,260,160,70,conv,textures->font);
@@ -251,7 +251,7 @@ void clean_font(TTF_Font * font)
 void print_life(SDL_Renderer *renderer,SDL_Texture *textures, world_t* world)
 {
   int x = 200;
-  int y = 530;
+  int y = 660;
   for(int i = 0; i<world->joueur->NbVie;i++){
     apply_texture(textures,renderer,x,y);
     x += 15;

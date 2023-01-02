@@ -6,6 +6,9 @@
 
 #include"niveau.h"
 
+#define nblig 20
+#define nbcol 20
+
 char** allouer_tab_2D(int n, int m){
     char** tab = malloc(n * sizeof(char*));
     for(int i =0; i<n; i++){
@@ -31,15 +34,12 @@ char** lire_fichier(const char* nomFichier){
     printf("Impossible d'ouvrir le fichier text : %s",nomFichier);
   } else {
 
-    int nbLig,nbCol;
-    nbLig = 16;
-    nbCol = 16;
-    char ch[nbLig*nbCol];
-    char** tab = allouer_tab_2D(nbLig,nbCol);
+    char ch[nblig*nbcol];
+    char** tab = allouer_tab_2D(nblig,nbcol);
 
     int i = 0;
-    while (fgets(ch, nbLig*nbCol, fichier) != NULL){
-      for(int j = 0; j< nbCol ; j++){
+    while (fgets(ch, nblig*nbcol, fichier) != NULL){
+      for(int j = 0; j< nbcol ; j++){
           tab[i][j] = ch[j];
       }
       i++;
@@ -54,8 +54,8 @@ void nb_element(char** tab,world_t *world)
   world->nb_gomme = 0;
   world->nb_supgomme = 0;
   world->nb_mur = 0;
-  for(int i =0;i<16;i++){
-    for(int j= 0;j<16;j++){
+  for(int i =0;i<nblig;i++){
+    for(int j= 0;j<nbcol;j++){
       if(tab[i][j] == '1'){
         world->nb_gomme ++;
       }
@@ -74,8 +74,8 @@ void create_level(char** tab,world_t *world)
   int gomme = 0;
   int mur = 0;
   int supgomme = 0;
-  for(int i = 0;i<16;i++){
-    for(int j = 0;j<16;j++){
+  for(int i = 0;i<nblig;i++){
+    for(int j = 0;j<nbcol;j++){
       int x = i*32;
       int y = j*32;
       switch(tab[i][j])

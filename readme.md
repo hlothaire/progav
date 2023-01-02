@@ -1,5 +1,5 @@
 PacMan
-Projet Pacman Programmation avancée. Auteur: Lothaire Holcvart.Lien Git: https://github.com/hlothaire/PacMan Instructions de compilation:
+Projet Pacman Programmation avancée. Auteur: Lothaire Holcvart.Lien Git: https://github.com/hlothaire/progav Instructions de compilation:
 
 Installer SDL2 et SDL2_TTF Decompresser l'archive dans un dossier. Se placer dans ce dossier a l'aide du terminal Utiliser la commande "make" Instructions de lancement: Se placer dans le dossier qui contient les fichiers du jeu a l'aide du terminal. Utiliser la commande: "./PacMan" pour lancer le jeu. Manuel du jeu:
 

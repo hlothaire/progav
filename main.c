@@ -4,6 +4,7 @@
  * \brief fichier main du jeu
  */
 #include"graphic.h"
+#include"time.h"
 
 #define SPRITE_SIZE 32;
 
@@ -15,9 +16,9 @@ int main( int argc, char* args[] )
   textures_t texture;
   SDL_Event event;
   SDL_Window *window = NULL;
-
+  srand(time(NULL));
   init_ttf();
-  if(init_sdl(&window,&renderer,512,576) == -1){
+  if(init_sdl(&window,&renderer,640,704) == -1){
     return EXIT_FAILURE;
   }
   tab = lire_fichier("ressources/niveau/niveau.txt");

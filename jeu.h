@@ -34,7 +34,7 @@ typedef struct fantome {
 	int PosX;
 	int PosY;
 	int Difficulte;
-  int is_visible;
+   	int is_visible;
 } fantome_t;
 
 /**
@@ -261,4 +261,21 @@ void move_fantomes(world_t *world);
  * \param world Monde a modifier
  * \param fantome Fantome a regarder
  */
-void move_fantome(world_t *world, fantome_t *fantome);
+void move_fantome1(world_t *world, fantome_t *fantome);
+
+/**
+* \brief Fonction de gestion
+ * Gère les deplacements d un fantome
+ * \param world Monde a modifier
+ * \param fantome Fantome a regarder
+ */
+void move_fantome2(world_t *world, fantome_t *fantome);
+
+/**
+* \brief Fonction de gestion
+ * Gère les deplacements d un fantome
+ * \param world Monde a modifier
+ * \param fantome Fantome a regarder
+ */
+void move_fantome3(world_t *world, fantome_t *fantome);
+
